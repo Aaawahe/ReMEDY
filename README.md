@@ -10,7 +10,7 @@ Moreover, testing results indicated that training with both medical and reasonin
 By sharing experimental insights and open-sourcing relevant code and data, we aim to inspire future research on large-scale model reinforcement learning in diverse domains.
 
 <div align="center">
-<img src="pics/w-reasoning-based-bench.svg" alt="ReMEDY" width="800"/>
+<img src="pics/intro.svg" alt="ReMEDY" width="800"/>
 </div>
 
 ## 📝 Training Details
@@ -30,7 +30,7 @@ The final medical dataset contains 4,146 questions from MedQA (mostly english), 
 Unlike math problems, medical problems often lack a strictly defined ground truth, as models may use synonyms or paraphrases of the correct answer. Consequently, exact equality is not an effective rule-based verification method for medical tasks. To address this, we employ an additional LLM to evaluate and score the answers. This model compares the generated answer with the provided ground truth, assessing whether the answer conveys the same meaning as the ground truth. Answers are scored as 2 for completely correct, 1 for partially correct (i.e., provide multiple answers, with one corresponding to the correct answer), and 0 for incorrect responses.
 
 ### Settings
-We use [*Qwen2.5-7B*](https://huggingface.co/Qwen/Qwen2.5-7B) as our baseline, using Proximal Policy Optimization (PPO) but remove the kl penalty. The code is built on the [*verl*](https://github.com/volcengine/verl) framework.
+We use [*Qwen2.5-7B*](https://huggingface.co/Qwen/Qwen2.5-7B) as our baseline, using Groupwise Relative Policy Optimization (GRPO), while omitting the KL penalty and applying clip-higher and overlong penalty. The code is built on the [*verl*](https://github.com/volcengine/verl) framework.
 
 It should be noted that, with the same number of training steps, the model with reasoning-based data was trained on only 45% of the medical data compared to the model without reasoning-based data since we maintained the same batch size throughout each steps.
 
@@ -71,6 +71,20 @@ Despite the reduced medical data volume, the model with reasoning-based data out
 However, we did not observe significant improvements in the Chinese benchmarks (bottom left and bottom right). We hypothesize that this is primarily due to the reasoning-based training data being exclusively in English, which hinders the model's ability to generalize these capabilities to Chinese. This limitation might be mitigated in larger language models.
 
 Additionally, we observed a significant decline in performance on the MedQA-US test set when the model was trained exclusively on medical datasets. This suggests an overfitting issue with the open-ended question format, which hinders the performance of the standard multi-choice manner.
+
+## 📈 Benchmark
+We compared our method with several baselines using popular medical benchmarks. We employed Deepseek-v3 as the verifier. The results are as follows:
+
+
+|                | MedQA-US | MedQA-Mainland(zh) | MMLU-med | NEJM QA | Clinical Diagnosis(zh) | Clinical Treatment(zh) | RareArena RDC | RareArena RDS | RareBench | MedRBench Diagnosis | MedRBench Treatment | ddxplus | seer | MedXpertQA |
+|--------------------------|----------|--------------------|----------|---------|------------------------|------------------------|---------------|---------------|-----------|---------------------|---------------------|---------|------|-------|
+| baichuan-m1-14b-instruct | 77.7     | 80.5               | 82.76    | 68.86   | 76                     | 39                     | 84            | 53            | 64        | 86                  | 66                  | 47      | 53   | 21.63 |
+| Qwen2.5-7b-Instruct      | 56.4     | 69.6               | 74.75    | 48.43   | 72                     | 32                     | 50            | 30            | 49        | 78                  | 60                  | 51      | 54   | 11.43 |
+| HuatuoGPT-o1-8B          | 69.1     | 65.4               | 73.33    | 54.2    | 51                     | 22                     | 64            | 43            | 59        | 76                  | 51                  | 47      | 45   | 15.06 |
+| HuatuoGPT-o1-7B          | 47.6     | 83.6               | 61.55    | 38.22   | 70                     | 31                     | 56            | 37            | 58        | 74                  | 53                  | 52      | 40   | 14.33 |
+| Ours(7b zero)            | 61.8     | 88.7               | 77.08    | 52.55   | 69                     | 34                     | 69            | 47            | 65        | 83                  | 57                  | 49      | 57   | 13.87 |
+
+
 
 ## 📖 Examples
 During training, we observed a shift in the model's response pattern from simple knowledge recall to reasoning-based analysis. This process involves enumerating multiple possibilities, eliminating options based on specific patient conditions, transitioning between ideas, selecting the optimal solution, and self-verification.
