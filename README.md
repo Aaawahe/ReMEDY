@@ -76,13 +76,13 @@ Additionally, we observed a significant decline in performance on the MedQA-US t
 We compared our method with several baselines using popular medical benchmarks. We employed Deepseek-v3 as the verifier. The results are as follows:
 
 
-|                | MedQA-US | MedQA-Mainland(zh) | MMLU-med | NEJM QA | Clinical Diagnosis(zh) | Clinical Treatment(zh) | RareArena RDC | RareArena RDS | RareBench | MedRBench Diagnosis | MedRBench Treatment | ddxplus | seer | MedXpertQA |
-|--------------------------|----------|--------------------|----------|---------|------------------------|------------------------|---------------|---------------|-----------|---------------------|---------------------|---------|------|-------|
-| baichuan-m1-14b-instruct | 77.7     | 80.5               | 82.76    | 68.86   | 76                     | 39                     | 84            | 53            | 64        | 86                  | 66                  | 47      | 53   | 21.63 |
-| Qwen2.5-7b-Instruct      | 56.4     | 69.6               | 74.75    | 48.43   | 72                     | 32                     | 50            | 30            | 49        | 78                  | 60                  | 51      | 54   | 11.43 |
-| HuatuoGPT-o1-8B          | 69.1     | 65.4               | 73.33    | 54.2    | 51                     | 22                     | 64            | 43            | 59        | 76                  | 51                  | 47      | 45   | 15.06 |
-| HuatuoGPT-o1-7B          | 47.6     | 83.6               | 61.55    | 38.22   | 70                     | 31                     | 56            | 37            | 58        | 74                  | 53                  | 52      | 40   | 14.33 |
-| Ours(7b zero)            | 61.8     | 88.7               | 77.08    | 52.55   | 69                     | 34                     | 69            | 47            | 65        | 83                  | 57                  | 49      | 57   | 13.87 |
+|                                  | MedQA-Mainland(zh) | MedQA-US | MMLU-med | RareArena RDC | RareArena RDS | RareBench | ddxplus | seer | Clinical Diagnosis(zh) | Clinical Treatment(zh) | MedRBench Diagnosis | MedRBench Treatment | NEJM QA | MedXpertQA |
+|----------------------------------|--------------------|----------|----------|---------------|---------------|-----------|---------|------|------------------------|------------------------|---------------------|---------------------|---------|------------|
+| Baichuan-M1-14B-Instruct         | 80.5               | 77.7     | 82.76    | 84            | 53            | 64        | 47      | 53   | 76                     | 39                     | 86                  | 66                  | 68.86   | 21.63      |
+| Qwen2.5-7b-Instruct              | 69.6               | 56.4     | 74.75    | 50            | 30            | 49        | 51      | 54   | 72                     | 32                     | 78                  | 60                  | 48.43   | 11.43      |
+| HuatuoGPT-o1-8B                  | 65.4               | 69.1     | 73.33    | 64            | 43            | 59        | 47      | 45   | 51                     | 22                     | 76                  | 51                  | 54.2    | 15.06      |
+| HuatuoGPT-o1-7B                  | 83.6               | 47.6     | 61.55    | 56            | 37            | 58        | 52      | 40   | 70                     | 31                     | 74                  | 53                  | 38.22   | 14.33      |
+| Remedy (RL from qwen2.5-7b-base) | 88.7               | 61.8     | 77.08    | 69            | 47            | 65        | 49      | 57   | 69                     | 34                     | 83                  | 57                  | 52.55   | 13.87      |
 
 
 
